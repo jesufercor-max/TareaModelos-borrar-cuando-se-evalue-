@@ -7,9 +7,9 @@
 
        {
             "name": "Python: Django",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/Tema_4_Views/ejercicio_vistas/manage.py",
+            "program": "${workspaceFolder}/TareaModelos-borrar-cuando-se-evalue/manage.py",
             "args": [
                 "runserver"
             ],

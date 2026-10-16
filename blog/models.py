@@ -92,7 +92,7 @@ class Asignacion_tarea(models.Model):
     
     # Tus campos adicionales existentes
     observaciones = models.TextField(max_length=150)
-    fecha_asignacion = models.DateTimeField(null=True)
+    fecha_asignacion = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.usuario.nombre} asignado a {self.tarea.titulo}"
