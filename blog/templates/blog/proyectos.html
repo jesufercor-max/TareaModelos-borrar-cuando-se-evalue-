@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Proyectos{% endblock %}
+
+{% block contenido %}
+
+<div class="cabecera">
+    <h2>Todos los proyectos</h2>
+    <p>Listado de proyectos registrados en la aplicación.</p>
+</div>
+
+<div class="tarjeta tabla-contenedor">
+    {% if datos %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Duración</th>
+            <th>Fecha inicio</th>
+            <th>Fecha finalización</th>
+            <th>Creador</th>
+        </tr>
+
+        {% for proyecto in datos %}
+        <tr>
+            <td>{{ proyecto.id }}</td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.duracion_estimada }}</td>
+            <td>{{ proyecto.fecha_inicio }}</td>
+            <td>{{ proyecto.fecha_finalizacion }}</td>
+            <td>{{ proyecto.creador.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="vacio">No hay proyectos registrados.</p>
+    {% endif %}
+</div>
+
+<a class="volver" href="/">← Volver al inicio</a>
+
+{% endblock %}

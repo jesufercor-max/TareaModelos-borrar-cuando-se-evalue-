@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Tareas por observaciones{% endblock %}
+
+{% block contenido %}
+
+<div class="cabecera">
+    <h2>Tareas encontradas</h2>
+    <p>Resultados de la búsqueda por observaciones de asignación.</p>
+</div>
+
+<div class="tarjeta tabla-contenedor">
+    {% if datos %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+            <th>Proyecto</th>
+        </tr>
+
+        {% for tarea in datos %}
+        <tr>
+            <td>{{ tarea.id }}</td>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.descripcion }}</td>
+            <td>{{ tarea.prioridad }}</td>
+            <td>{{ tarea.get_estado_display }}</td>
+            <td>{{ tarea.proyecto.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="vacio">No se han encontrado tareas con esas observaciones.</p>
+    {% endif %}
+</div>
+
+<a class="volver" href="/">← Volver al inicio</a>
+
+{% endblock %}

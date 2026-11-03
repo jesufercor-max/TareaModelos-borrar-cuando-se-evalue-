@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Tareas completadas{% endblock %}
+
+{% block contenido %}
+
+<div class="cabecera">
+    <h2>Tareas completadas</h2>
+    <p>Tareas cuyo estado es completado y cuya fecha está dentro del intervalo solicitado.</p>
+</div>
+
+<div class="tarjeta tabla-contenedor">
+    {% if datos %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Proyecto</th>
+            <th>Fecha creación</th>
+            <th>Estado</th>
+            <th>Completada</th>
+        </tr>
+
+        {% for tarea in datos %}
+        <tr>
+            <td>{{ tarea.id }}</td>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.proyecto.nombre }}</td>
+            <td>{{ tarea.fecha_creacion }}</td>
+            <td><span class="estado">{{ tarea.get_estado_display }}</span></td>
+            <td>{{ tarea.completada|yesno:"Sí,No" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="vacio">No hay tareas completadas en ese intervalo.</p>
+    {% endif %}
+</div>
+
+<a class="volver" href="/">← Volver al inicio</a>
+
+{% endblock %}

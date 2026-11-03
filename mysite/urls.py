@@ -19,5 +19,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", include("blog.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
+
+handler400 = "blog.views.error_400"
+handler403 = "blog.views.error_403"
+handler404 = "blog.views.error_404"
+handler500 = "blog.views.error_500"

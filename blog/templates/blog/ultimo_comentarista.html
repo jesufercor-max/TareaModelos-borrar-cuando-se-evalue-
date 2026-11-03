@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Último comentarista{% endblock %}
+
+{% block contenido %}
+
+<div class="cabecera">
+    <h2>Último usuario comentarista</h2>
+    <p>Último comentario realizado en las tareas del proyecto.</p>
+</div>
+
+<div class="tarjeta">
+    {% if datos %}
+        {% for comentario in datos %}
+            <h3>{{ comentario.autor.nombre }}</h3>
+            <p><strong>Correo:</strong> {{ comentario.autor.correo }}</p>
+            <p><strong>Comentario:</strong> {{ comentario.contenido }}</p>
+            <p><strong>Fecha:</strong> {{ comentario.fecha_comentario }}</p>
+            <p><strong>Tarea:</strong> {{ comentario.tarea.titulo }}</p>
+        {% endfor %}
+    {% else %}
+        <p class="vacio">Este proyecto todavía no tiene comentarios.</p>
+    {% endif %}
+</div>
+
+<a class="volver" href="/">← Volver al inicio</a>
+
+{% endblock %}

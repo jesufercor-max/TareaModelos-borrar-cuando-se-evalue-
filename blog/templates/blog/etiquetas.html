@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Etiquetas del proyecto{% endblock %}
+
+{% block contenido %}
+
+<div class="cabecera">
+    <h2>Etiquetas del proyecto</h2>
+    <p>Etiquetas utilizadas en las tareas de este proyecto.</p>
+</div>
+
+<div class="tarjeta">
+    {% if datos %}
+        {% for etiqueta in datos %}
+            <span class="etiqueta">{{ etiqueta.nombre }}</span>
+        {% endfor %}
+    {% else %}
+        <p class="vacio">Este proyecto no tiene etiquetas utilizadas.</p>
+    {% endif %}
+</div>
+
+<a class="volver" href="/">← Volver al inicio</a>
+
+{% endblock %}
