@@ -1,199 +1,230 @@
-# Práctica: Tarea de Creación de Modelos e Integridad de Datos
+# Creación de URLs, Vistas y QuerySets
 
-Este repositorio contiene la resolución práctica para el escenario de una **Aplicación de Gestión de Tareas y Proyectos Cooperativos** implementada en **Django 6**. Contiene la definición de modelos relacionales avanzados, tablas intermedias personalizadas, corrección de restricciones de base de datos y la carga inicial de datos de prueba mediante fixtures.
+## 1. Descripción de la actividad
 
----
+En esta actividad se desarrolla una aplicación de gestión de tareas mediante la creación de diferentes URLs y vistas que permiten consultar información de los modelos de la aplicación.
 
-## 📖 1. Escenario y Requisitos del Sistema
+El objetivo es trabajar con las consultas ORM de Django, los filtros, las relaciones entre modelos, la ordenación de resultados y la optimización de consultas.
 
-El sistema representa una plataforma web donde los usuarios administran proyectos, asignan tareas de forma unívoca o compartida, clasifican elementos mediante etiquetas y colaboran insertando comentarios. 
+También se trabaja con la organización de plantillas HTML mediante herencia y la creación de páginas de error personalizadas.
 
-### 🗂️ Entidades y Restricciones Solicitadas:
-*   **Usuario:** Identificador único por correo electrónico y marcas temporales de registro.
-*   **Proyecto:** Planificación temporal de objetivos con un Administrador/Creador único y un equipo de colaboradores adjuntos.
-*   **Tarea:** Ciclos de vida controlados por estados (`Pendiente`, `Progreso`, `Completada`), hora estricta de vencimiento y prioridad numérica.
-*   **Etiqueta:** Indexación por términos semánticos únicos.
-*   **Asignación de Tarea:** Historial explícito de auditoría del flujo de trabajo de los operarios.
-*   **Comentario:** Hilo de discusión conversacional anidado por tarea.
+## 2. Ejercicios realizados
 
----
+### Ejercicio 1. Página de inicio
 
-## 🛠️ 2. Arquitectura de Modelos (`blog/models.py`)
+Se crea una página principal con enlaces para acceder a los diferentes ejercicios de la actividad.
 
-Se han implementado las relaciones solicitadas mediante claves foráneas (`ForeignKey`), relaciones muchos-a-muchos (`ManyToManyField`) y la declaración de la tabla intermedia explícita `Asignacion_tarea` usando el atributo `through`.
+### Ejercicio 2. Mostrar todos los proyectos
+
+**URL:** `/proyectos/`
+
+Se muestran todos los proyectos almacenados en la base de datos, incluyendo sus datos y el nombre de su creador.
+
+Se utiliza `select_related('creador')` para optimizar la consulta y evitar consultas adicionales al recuperar los datos del creador.
+
+### Ejercicio 3. Tareas de un proyecto
+
+**URL:** `/proyectos/<proyecto_id>/tareas/`
+
+Se muestran todas las tareas pertenecientes a un proyecto determinado.
+
+Los resultados se ordenan por fecha de creación descendente mediante `order_by('-fecha_creacion')`.
+
+### Ejercicio 4. Usuarios asignados a una tarea
+
+**URL:** `/tareas/<tarea_id>/usuarios/`
+
+Se muestran los usuarios asignados a una tarea, junto con su fecha de asignación y observaciones.
+
+Los resultados se ordenan por fecha de asignación ascendente.
+
+Se utiliza `select_related('usuario')` para optimizar la consulta.
+
+### Ejercicio 5. Tareas por observaciones
+
+**URL:** `/tareas/observaciones/<texto>/`
+
+Se obtienen las tareas cuyas observaciones de asignación contienen el texto indicado en la URL.
+
+Se utiliza `icontains` para realizar búsquedas sin distinguir entre mayúsculas y minúsculas y `distinct()` para evitar resultados duplicados.
+
+### Ejercicio 6. Tareas completadas entre dos años
+
+**URL:** `/tareas/completadas/<anio_inicio>/<anio_fin>/`
+
+Se muestran las tareas cuyo estado sea completado y cuya fecha de creación esté comprendida entre los dos años indicados.
+
+Se utilizan los filtros `range` y `estado='COM'`.
+
+### Ejercicio 7. Último usuario comentarista de un proyecto
+
+**URL:** `/proyectos/<proyecto_id>/ultimo-comentarista/`
+
+Se obtiene el comentario más reciente realizado en cualquiera de las tareas de un proyecto.
+
+Se utiliza `order_by('-fecha_comentario').first()` para recuperar el último comentario y mostrar los datos de su autor.
+
+### Ejercicio 8. Comentarios por palabra y año
+
+**URL:** `/tareas/<tarea_id>/comentarios/<palabra>/<anio>/`
+
+Se obtienen los comentarios de una tarea cuyo contenido comienza por la palabra indicada y que pertenecen al año especificado.
+
+Se utilizan los filtros `istartswith` y `year`.
+
+### Ejercicio 9. Etiquetas de un proyecto
+
+**URL:** `/proyectos/<proyecto_id>/etiquetas/`
+
+Se muestran las etiquetas utilizadas en las tareas de un proyecto determinado.
+
+Se utiliza `distinct()` para evitar que aparezcan etiquetas repetidas.
+
+### Ejercicio 10. Usuarios sin tareas asignadas
+
+**URL:** `/usuarios/sin-tareas/`
+
+Se muestran los usuarios que no tienen ninguna tarea asignada.
+
+Se utiliza `isnull=True` sobre la relación inversa `tareas_asignadas`.
+
+### Ejercicio 11. Páginas de error personalizadas
+
+Se crean cuatro plantillas para gestionar los siguientes errores:
+
+- `400.html`: solicitud incorrecta.
+- `403.html`: acceso prohibido.
+- `404.html`: página no encontrada.
+- `500.html`: error interno del servidor.
+
+Estas páginas mantienen la estructura y el diseño general de la aplicación.
+
+## 3. Consultas ORM utilizadas
+
+Durante la actividad se han utilizado diferentes métodos y filtros del ORM de Django:
+
+| Método o filtro | Utilidad |
+|---|---|
+| `all()` | Obtener todos los registros. |
+| `filter()` | Filtrar registros según condiciones. |
+| `order_by()` | Ordenar los resultados. |
+| `first()` | Obtener el primer resultado. |
+| `distinct()` | Evitar registros duplicados. |
+| `select_related()` | Optimizar consultas de relaciones ForeignKey. |
+| `range` | Filtrar valores comprendidos entre dos límites. |
+| `icontains` | Buscar texto sin distinguir mayúsculas y minúsculas. |
+| `istartswith` | Buscar textos que comienzan por una palabra. |
+| `isnull` | Comprobar si una relación está vacía. |
+| `year` | Filtrar fechas por año. |
+
+## 4. Optimización de consultas
+
+Durante el desarrollo se ha utilizado Django Debug Toolbar para comprobar el número de consultas SQL realizadas en cada vista.
+
+Se detectaron consultas adicionales al acceder a información de modelos relacionados.
+
+Para mejorar el rendimiento se incorporó `select_related()` en los ejercicios 2 y 4.
+
+Ejemplo del ejercicio 2:
 
 ```python
-from django.conf import settings
-from django.db import models 
-from django.utils import timezone
-
-# ==========================================
-# 1. MODELO USUARIO
-# ==========================================
-class Usuario(models.Model):
-    nombre = models.CharField(max_length=50)
-    correo = models.EmailField(max_length=50, unique=True)
-    contraseña = models.CharField(max_length=128)
-    fecha_registro = models.DateTimeField()
-
-    def __str__(self):
-        return self.nombre
-
-
-# ==========================================
-# 2. MODELO PROYECTO
-# ==========================================
-class Proyecto(models.Model):
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField(max_length=150)
-    duracion_estimada = models.FloatField()
-    fecha_inicio = models.DateField()
-    fecha_finalizacion = models.DateField()
-    
-    # RELACIÓN: Creador/Administrador (Uno a Muchos)
-    creador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='proyectos_creados')
-    
-    # RELACIÓN: Colaboradores del proyecto (Muchos a Muchos)
-    colaboradores = models.ManyToManyField(Usuario, related_name='proyectos_asignados', blank=True)
-
-    def __str__(self):
-        return self.nombre
-
-
-# ==========================================
-# 3. MODELO ETIQUETA
-# ==========================================
-class Etiqueta(models.Model):
-    nombre = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.nombre
-
-
-# ==========================================
-# 4. MODELO TAREA
-# ==========================================
-class Tarea(models.Model):
-    ESTADO_CHOICES = [
-        ("PEN", "Pendiente"),
-        ("PRO", "Progreso"),
-        ("COM", "Completada"),
-    ]   
-
-    titulo = models.CharField(max_length=50)
-    descripcion = models.TextField(max_length=150)
-    prioridad = models.IntegerField()
-    estado = models.CharField(max_length=3, choices=ESTADO_CHOICES, default="PEN")
-    fecha_creacion = models.DateField()
-    hora_vencimiento = models.TimeField()
-    completada = models.BooleanField(default=False)
-
-    # RELACIÓN: Un proyecto tiene varias tareas (Uno a Muchos)
-    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, related_name='tareas')
-    
-    # RELACIÓN: Tarea creada por un usuario (Uno a Muchos)
-    creador = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='tareas_creadas')
-    
-    # RELACIÓN: Etiquetas de la tarea (Muchos a Muchos)
-    etiquetas = models.ManyToManyField(Etiqueta, related_name='tareas', blank=True)
-    
-    # RELACIÓN: Tarea a Usuarios usando TABLA INTERMEDIA personalizada
-    usuarios_asignados = models.ManyToManyField(Usuario, through='Asignacion_tarea', related_name='tareas_asignadas')
-
-    def __str__(self):
-        return self.titulo
-
-
-# ==========================================
-# 5. MODELO TABLA INTERMEDIA (Asignación de Tarea)
-# ==========================================
-class Asignacion_tarea(models.Model):
-    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    observaciones = models.TextField(max_length=150)
-    
-    # Ajuste crítico: null=True, blank=True para compatibilidad con librerías externas de Seeding
-    fecha_asignacion = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.usuario.nombre} asignado a {self.tarea.titulo}"
-
-
-# ==========================================
-# 6. MODELO COMENTARIO
-# ==========================================
-class Comentario(models.Model):
-    contenido = models.TextField(max_length=150)
-    fecha_comentario = models.DateTimeField()
-    
-    # RELACIÓN: Autor del comentario (Uno a Muchos)
-    autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='comentarios')
-    
-    # RELACIÓN: Tarea asociada (Uno a Muchos)
-    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE, related_name='comentarios')
-
-    def __str__(self):
-        return f"Comentario de {self.autor.nombre} en {self.tarea.titulo}"
+proyectos = Proyecto.objects.select_related('creador').all()
 ```
 
----
+Ejemplo del ejercicio 4:
 
-## ⚙️ 3. Guía de Despliegue y Activación del Entorno
-
-Sigue los siguientes comandos secuenciales en la terminal para limpiar las restricciones del sistema global (PEP 668) y levantar el entorno de desarrollo:
-
-### 1. Preparar el Entorno Virtual Limpio
-```bash
-# Desactivar entornos corruptos previos si los hubiera
-deactivate 2>/dev/null
-
-# Crear y activar el entorno virtual local 'venv'
-python3 -m venv venv
-source venv/bin/activate
+```python
+usuarios = Asignacion_tarea.objects.filter(tarea_id=tarea_id).select_related('usuario').order_by('fecha_asignacion')
 ```
 
-### 2. Instalar las Dependencias obligatorias
-```bash
-# Instalar el listado de requisitos del proyecto
-pip install -r requirements.txt
+Estas modificaciones permiten recuperar los objetos relacionados mediante una misma consulta SQL, reduciendo las consultas adicionales.
+
+## 5. Consultas SQL RAW
+
+Como alternativa a las consultas ORM, se han incluido consultas SQL RAW comentadas en las vistas.
+
+Se utiliza el método `raw()` para realizar consultas SQL directamente sobre la base de datos.
+
+Estas consultas se mantienen comentadas y no se ejecutan durante el funcionamiento normal de la aplicación.
+
+El acceso principal a los datos se realiza mediante el ORM de Django.
+
+## 6. Plantillas HTML y herencia
+
+Todas las plantillas se encuentran dentro de:
+
+```text
+blog/templates/blog/
 ```
 
-### 3. Aplicar Migraciones Estructurales
+Se ha creado una plantilla principal llamada `base.html`, que contiene la estructura común de todas las páginas:
+
+- Cabecera.
+- Menú de navegación.
+- Contenido principal.
+- Pie de página.
+- Estilos CSS generales.
+
+Las demás plantillas utilizan la herencia mediante:
+
+```django
+{% extends 'blog/base.html' %}
+```
+
+Para introducir el contenido específico de cada página se utiliza el bloque:
+
+```django
+{% block content %}
+    <!-- Contenido de cada página -->
+{% endblock %}
+```
+
+### Ventajas de la herencia
+
+- Evita repetir la misma estructura HTML.
+- Facilita el mantenimiento del código.
+- Permite modificar el diseño general desde un único archivo.
+- Mantiene una apariencia común en todas las páginas.
+
+## 7. Organización de los estilos CSS
+
+Los estilos generales se encuentran definidos dentro de la etiqueta `<style>` de `base.html`.
+
+De esta manera, todas las plantillas que heredan de la plantilla principal comparten automáticamente los mismos estilos.
+
+Se han definido estilos para:
+
+- Cabecera y navegación.
+- Contenedores.
+- Tablas de resultados.
+- Tarjetas.
+- Botones y enlaces.
+- Mensajes informativos.
+- Páginas de error.
+- Pie de página.
+
+Al centralizar los estilos en `base.html`, cualquier modificación del diseño general se aplica automáticamente al resto de páginas.
+
+## 8. Ejecución de la actividad
+
+Para ejecutar la aplicación:
+
 ```bash
-python manage.py makemigrations
 python manage.py migrate
+python manage.py runserver
 ```
 
----
+La página principal estará disponible en:
 
-## 📊 4. Generación Automática de Datos (Seeder)
-
-Para cumplir con el requerimiento de poblar **30 registros distribuidos por cada tabla**, se utiliza la librería `django-seed`.
-
-> **Nota de Integridad:** Se modificó el campo `fecha_asignacion` del modelo `Asignacion_tarea` a `null=True` debido a que el motor automático del Seeder no es capaz de computar marcas de tiempo aleatorias concurrentes en tablas pivote manuales, lanzando una excepción `NOT NULL constraint failed`.
-
-Comando de ejecución del generador:
-```bash
-python manage.py seed blog --number=30
+```text
+http://127.0.0.1:8000/
 ```
 
----
 
-## 💾 5. Copias de Seguridad y Restauración con Fixtures
+**Nota:** La base de datos local está excluida del repositorio mediante `.gitignore`. Por tanto, para comprobar los resultados de los ejercicios será necesario disponer de registros de prueba relacionados entre los diferentes modelos.
 
-El estado consolidado de la base de datos se almacena en ficheros serialization JSON que guardan las dependencias cruzadas e índices semánticos en perfecto orden en español.
+## 9. Conclusión
 
-El archivo está ubicado en `blog/Fixtures/datos.json`.
+En esta actividad se han trabajado las relaciones entre modelos, las consultas ORM, los filtros y la ordenación de resultados.
 
-### Comandos de Operación:
-
-*   **Cargar la copia de seguridad de la práctica :**
-    ```bash
-    python manage.py loaddata datos.json
-    ```
-*   **Generar un nuevo volcado/respaldo (Backup manual):**
-    ```bash
-    python manage.py dumpdata blog --indent=2 > blog/Fixtures/backup_actual.json
-    ```
-
----
+También se ha mejorado el rendimiento de determinadas consultas mediante `select_related()` y se ha organizado la presentación de las páginas utilizando herencia de plantillas y estilos CSS compartidos.
