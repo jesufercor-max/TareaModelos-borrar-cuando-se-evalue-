@@ -1,37 +1,31 @@
-# Entorno virtual
+*.pyc
+*~
+__pycache__
+
+# Env
+.env
 myvenv/
 venv/
-env/
 
-# Archivos de Python
-__pycache__/
-*.py[cod]
-*$py.class
+# Database
+db.sqlite3
 
-# Archivos de Django
-*.log
+# Static folder at project root
+/static/
 
-# Archivos de configuración local
-.env
-.env.*
-
-# Archivos de VS Code
-.vscode/
-
-# Archivos de PyCharm
-.idea/
-
-# Archivos del sistema
+# macOS
+._*
 .DS_Store
-Thumbs.db
+.fseventsd
+.Spotlight-V100
 
-# Archivos temporales
-*.tmp
-*.temp
-*.bak
+# Windows
+Thumbs.db*
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
 
-# Archivos generados de Django
-staticfiles/
-
-# Media subida por usuarios
-media/
+# Visual Studio
+.vscode/
+.history/
+*.code-workspace
