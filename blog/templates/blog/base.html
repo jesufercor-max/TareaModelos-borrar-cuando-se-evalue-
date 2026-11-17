@@ -1,245 +1,28 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %}Gestión de Tareas{% endblock %}</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f5f9;
-            color: #263247;
-            line-height: 1.6;
-        }
-
-        header {
-            background: #243b64;
-            color: white;
-            padding: 22px 8%;
-        }
-
-        header h1 {
-            font-size: 25px;
-        }
-
-        header p {
-            color: #d5deed;
-            margin-top: 4px;
-        }
-
-        nav {
-            background: white;
-            padding: 14px 8%;
-            border-bottom: 1px solid #e1e6ef;
-        }
-
-        nav a {
-            color: #243b64;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 20px;
-        }
-
-        nav a:hover {
-            color: #4779c7;
-        }
-
-        main {
-            width: 84%;
-            max-width: 1150px;
-            margin: 35px auto;
-            min-height: 65vh;
-        }
-
-        .cabecera {
-            margin-bottom: 25px;
-        }
-
-        .cabecera h2 {
-            font-size: 27px;
-            color: #243b64;
-            margin-bottom: 6px;
-        }
-
-        .cabecera p {
-            color: #718096;
-        }
-
-        .tarjeta {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .tabla-contenedor {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        th {
-            background: #243b64;
-            color: white;
-            text-align: left;
-            padding: 14px;
-        }
-
-        td {
-            padding: 13px 14px;
-            border-bottom: 1px solid #e8edf3;
-        }
-
-        tr:hover td {
-            background: #f6f8fc;
-        }
-
-        .boton {
-            display: inline-block;
-            background: #4779c7;
-            color: white;
-            padding: 10px 17px;
-            border-radius: 7px;
-            text-decoration: none;
-            margin-top: 15px;
-        }
-
-        .boton:hover {
-            background: #315fa5;
-        }
-
-        .volver {
-            display: inline-block;
-            margin-top: 20px;
-            color: #4779c7;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .vacio {
-            background: #fff8e6;
-            border: 1px solid #f0dfad;
-            color: #80651c;
-            padding: 18px;
-            border-radius: 8px;
-        }
-
-        .etiqueta {
-            display: inline-block;
-            background: #e7efff;
-            color: #315fa5;
-            padding: 7px 13px;
-            border-radius: 20px;
-            margin: 5px;
-        }
-
-        .estado {
-            display: inline-block;
-            background: #e2f5e9;
-            color: #267443;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 13px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 22px;
-            color: #8490a2;
-            background: white;
-            border-top: 1px solid #e1e6ef;
-        }
-
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 18px;
-        }
-
-        .menu a {
-            display: block;
-            background: white;
-            padding: 22px;
-            border-radius: 12px;
-            color: #243b64;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-            transition: 0.2s;
-        }
-
-        .menu a:hover {
-            transform: translateY(-3px);
-            background: #eaf1ff;
-        }
-
-        .menu span {
-            display: block;
-            color: #718096;
-            font-size: 13px;
-            font-weight: normal;
-            margin-top: 7px;
-        }
-
-        .error {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .error h2 {
-            font-size: 65px;
-            color: #4779c7;
-        }
-
-        @media (max-width: 650px) {
-            main {
-                width: 92%;
-            }
-
-            header, nav {
-                padding-left: 4%;
-                padding-right: 4%;
-            }
-
-            nav a {
-                display: inline-block;
-                margin: 5px 10px 5px 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Gestión de Tareas{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'blog/css/estilos.css' %}">
+  <script src="{% static 'blog/js/app.js' %}" defer></script>
 </head>
 
 <body>
-
-    <header>
-        <h1>Gestión de Tareas</h1>
-        <p>Aplicación de gestión de proyectos y tareas</p>
-    </header>
-
-    <nav>
-        <a href="/">Inicio</a>
-    </nav>
-
-    <main>
-        {% block contenido %}
-        {% endblock %}
-    </main>
-
-    <footer>
-        <p>Proyecto DAW - Gestión de Tareas</p>
-    </footer>
-
+  {% block cabecera %}
+  <header class="marca">
+    <img src="{% static 'blog/img/gestion-tareas.svg' %}" alt="Icono de tareas">
+    <div>
+      <h1>Gestión de Tareas</h1>
+      <p>Aplicación de gestión de proyectos y tareas</p>
+    </div>
+  </header>
+  {% endblock %}
+  {% include 'blog/includes/navegacion.html' %}
+  <main>{% block contenido %}{% endblock %}</main>
+  {% include 'blog/includes/pie.html' %}
 </body>
+
 </html>

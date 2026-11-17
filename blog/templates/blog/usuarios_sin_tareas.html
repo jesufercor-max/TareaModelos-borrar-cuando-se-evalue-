@@ -1,38 +1,26 @@
 {% extends 'blog/base.html' %}
-
 {% block titulo %}Usuarios sin tareas{% endblock %}
-
 {% block contenido %}
-
 <div class="cabecera">
     <h2>Usuarios sin tareas asignadas</h2>
     <p>Usuarios que actualmente no participan en ninguna tarea.</p>
 </div>
-
 <div class="tarjeta tabla-contenedor">
-    {% if datos %}
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Correo electrónico</th>
-            <th>Fecha de registro</th>
-        </tr>
-
-        {% for usuario in datos %}
-        <tr>
-            <td>{{ usuario.id }}</td>
-            <td>{{ usuario.nombre }}</td>
-            <td>{{ usuario.correo }}</td>
-            <td>{{ usuario.fecha_registro }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo electrónico</th>
+                <th>Fecha de registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in datos %}{% include 'blog/includes/fila_usuario.html' %}{% empty %}<tr>
+                <td colspan="4" class="vacio">Todos los usuarios tienen tareas asignadas o no hay usuarios registrados.
+                </td>
+            </tr>{% endfor %}
+        </tbody>
     </table>
-    {% else %}
-        <p class="vacio">Todos los usuarios tienen tareas asignadas o no hay usuarios registrados.</p>
-    {% endif %}
-</div>
-
-<a class="volver" href="/">← Volver al inicio</a>
-
+</div><a class="volver" href="{% url 'inicio' %}">← Volver al inicio</a>
 {% endblock %}

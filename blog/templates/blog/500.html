@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Error 500</title>
-</head>
-<body>
-    <h1>Error 500</h1>
-    <h2>Error interno del servidor</h2>
-    <p>Ha ocurrido un error interno. Inténtalo de nuevo más tarde.</p>
-    <a href="/">Volver al inicio</a>
-</body>
-</html>
+{% extends 'blog/base.html' %}
+{% block titulo %}Error 500 · Gestión de Tareas{% endblock %}
+{% block contenido %}<section class="tarjeta error">
+    <h2>500</h2>
+    <h3>Error interno del servidor</h3>
+    <p>Ha ocurrido un error interno. Inténtalo de nuevo más tarde.</p><a class="boton" href="{% url 'inicio' %}">Volver
+        al inicio</a>
+</section>{% endblock %}

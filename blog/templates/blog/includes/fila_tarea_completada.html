@@ -1,0 +1,1 @@
+<tr><td>{{ tarea.id }}</td><td>{{ tarea.titulo|title }}</td><td>{{ tarea.proyecto.nombre|title }}</td><td>{{ tarea.fecha_creacion|date:"d/m/Y" }}</td><td><span class="estado">{{ tarea.get_estado_display }}</span></td><td>{{ tarea.completada|yesno:"Sí,No" }}</td></tr>

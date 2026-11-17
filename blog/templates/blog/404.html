@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Error 404</title>
-</head>
-<body>
-    <h1>Error 404</h1>
-    <h2>Página no encontrada</h2>
-    <p>La página que estás buscando no existe.</p>
-    <a href="/">Volver al inicio</a>
-</body>
-</html>
+{% extends 'blog/base.html' %}
+{% block titulo %}Error 404 · Gestión de Tareas{% endblock %}
+{% block contenido %}<section class="tarjeta error">
+    <h2>404</h2>
+    <h3>Página no encontrada</h3>
+    <p>La página que estás buscando no existe.</p><a class="boton" href="{% url 'inicio' %}">Volver al inicio</a>
+</section>{% endblock %}

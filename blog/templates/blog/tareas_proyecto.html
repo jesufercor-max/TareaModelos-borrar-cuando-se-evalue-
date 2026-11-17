@@ -1,44 +1,28 @@
 {% extends 'blog/base.html' %}
-
 {% block titulo %}Tareas del proyecto{% endblock %}
-
 {% block contenido %}
-
 <div class="cabecera">
     <h2>Tareas del proyecto</h2>
-    <p>Listado de tareas ordenadas de más reciente a más antigua.</p>
+    <p>Tareas ordenadas de más reciente a más antigua. Resultados: {{ datos|length }}.</p>
 </div>
-
 <div class="tarjeta tabla-contenedor">
-    {% if datos %}
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Prioridad</th>
-            <th>Estado</th>
-            <th>Fecha creación</th>
-            <th>Vencimiento</th>
-        </tr>
-
-        {% for tarea in datos %}
-        <tr>
-            <td>{{ tarea.id }}</td>
-            <td>{{ tarea.titulo }}</td>
-            <td>{{ tarea.descripcion }}</td>
-            <td>{{ tarea.prioridad }}</td>
-            <td><span class="estado">{{ tarea.get_estado_display }}</span></td>
-            <td>{{ tarea.fecha_creacion }}</td>
-            <td>{{ tarea.hora_vencimiento }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Fecha creación</th>
+                <th>Vencimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tarea in datos %}{% include 'blog/includes/fila_tarea.html' %}{% empty %}<tr>
+                <td colspan="7" class="vacio">Este proyecto no tiene tareas.</td>
+            </tr>{% endfor %}
+        </tbody>
     </table>
-    {% else %}
-        <p class="vacio">Este proyecto no tiene tareas.</p>
-    {% endif %}
-</div>
-
-<a class="volver" href="/">← Volver al inicio</a>
-
+</div><a class="volver" href="{% url 'inicio' %}">← Volver al inicio</a>
 {% endblock %}

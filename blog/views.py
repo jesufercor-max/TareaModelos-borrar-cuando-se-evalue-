@@ -42,7 +42,7 @@ def tareas_por_observacion(request, texto):
 
 # EJERCICIO 6: Mostrar tareas completadas entre dos años
 def tareas_completadas_entre_anios(request, anio_inicio, anio_fin):
-    tareas = Tarea.objects.filter(fecha_creacion__range=(date(anio_inicio, 1, 1), date(anio_fin, 12, 31)), estado='COM')
+    tareas = Tarea.objects.filter(fecha_creacion__range=(date(anio_inicio, 1, 1), date(anio_fin, 12, 31)), completada=True)
     # SQL RAW:
     # tareas = Tarea.objects.raw("SELECT * FROM blog_tarea WHERE fecha_creacion BETWEEN %s AND %s AND estado = %s", [date(anio_inicio, 1, 1), date(anio_fin, 12, 31), 'COM'])
     return render(request, 'blog/tareas_completadas.html', {'datos': tareas})

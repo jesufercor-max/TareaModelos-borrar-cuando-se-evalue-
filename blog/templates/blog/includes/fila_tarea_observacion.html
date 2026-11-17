@@ -1,0 +1,1 @@
+<tr><td>{{ tarea.id }}</td><td>{{ tarea.titulo|title }}</td><td>{{ tarea.descripcion|default:"-"|truncatechars:70 }}</td><td>{{ tarea.prioridad|upper }}</td><td>{{ tarea.get_estado_display }}</td><td>{{ tarea.proyecto.nombre|title }}</td></tr>

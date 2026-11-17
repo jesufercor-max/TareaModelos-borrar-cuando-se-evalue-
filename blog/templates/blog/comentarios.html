@@ -1,29 +1,12 @@
 {% extends 'blog/base.html' %}
-
 {% block titulo %}Comentarios{% endblock %}
-
 {% block contenido %}
-
 <div class="cabecera">
     <h2>Comentarios encontrados</h2>
     <p>Comentarios filtrados por palabra inicial y año.</p>
 </div>
-
 <div class="tarjeta">
-    {% if datos %}
-        {% for comentario in datos %}
-            <div style="border-bottom: 1px solid #e8edf3; padding: 15px 0;">
-                <h3>{{ comentario.autor.nombre }}</h3>
-                <p>{{ comentario.contenido }}</p>
-                <p><strong>Fecha:</strong> {{ comentario.fecha_comentario }}</p>
-                <p><strong>Tarea:</strong> {{ comentario.tarea.titulo }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p class="vacio">No se han encontrado comentarios con esos criterios.</p>
-    {% endif %}
-</div>
-
-<a class="volver" href="/">← Volver al inicio</a>
-
+    {% for comentario in datos %}{% include 'blog/includes/fila_comentario.html' %}{% empty %}<p class="vacio">No se han
+        encontrado comentarios con esos criterios.</p>{% endfor %}
+</div><a class="volver" href="{% url 'inicio' %}">← Volver al inicio</a>
 {% endblock %}

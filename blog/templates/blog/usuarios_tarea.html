@@ -1,38 +1,25 @@
 {% extends 'blog/base.html' %}
-
 {% block titulo %}Usuarios asignados{% endblock %}
-
 {% block contenido %}
-
 <div class="cabecera">
     <h2>Usuarios asignados a una tarea</h2>
     <p>Usuarios ordenados por fecha de asignación ascendente.</p>
 </div>
-
 <div class="tarjeta tabla-contenedor">
-    {% if datos %}
     <table>
-        <tr>
-            <th>Usuario</th>
-            <th>Correo</th>
-            <th>Fecha de asignación</th>
-            <th>Observaciones</th>
-        </tr>
-
-        {% for asignacion in datos %}
-        <tr>
-            <td>{{ asignacion.usuario.nombre }}</td>
-            <td>{{ asignacion.usuario.correo }}</td>
-            <td>{{ asignacion.fecha_asignacion|default:"Sin fecha" }}</td>
-            <td>{{ asignacion.observaciones }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Fecha de asignación</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asignacion in datos %}{% include 'blog/includes/fila_asignacion.html' %}{% empty %}<tr>
+                <td colspan="4" class="vacio">No hay usuarios asignados a esta tarea.</td>
+            </tr>{% endfor %}
+        </tbody>
     </table>
-    {% else %}
-        <p class="vacio">No hay usuarios asignados a esta tarea.</p>
-    {% endif %}
-</div>
-
-<a class="volver" href="/">← Volver al inicio</a>
-
+</div><a class="volver" href="{% url 'inicio' %}">← Volver al inicio</a>
 {% endblock %}

@@ -1,61 +1,32 @@
 {% extends 'blog/base.html' %}
-
-{% block titulo %}Inicio - Gestión de Tareas{% endblock %}
-
+{% block titulo %}Inicio · Gestión de Tareas{% endblock %}
 {% block contenido %}
-
 <div class="cabecera">
     <h2>Panel principal</h2>
     <p>Selecciona uno de los ejercicios para consultar los datos de la aplicación.</p>
 </div>
-
+{% with ejercicios=9 estado="disponible" %}
+{% if ejercicios >= 5 and estado == "disponible" or not request.user.is_authenticated %}
 <div class="menu">
-
-    <a href="/proyectos/">
-        02. Todos los proyectos
-        <span>Consultar todos los proyectos registrados.</span>
-    </a>
-
-    <a href="/proyectos/1/tareas/">
-        03. Tareas de un proyecto
-        <span>Ver las tareas ordenadas por fecha.</span>
-    </a>
-
-    <a href="/tareas/1/usuarios/">
-        04. Usuarios asignados
-        <span>Consultar los usuarios asignados a una tarea.</span>
-    </a>
-
-    <a href="/tareas/observaciones/revisar/">
-        05. Buscar por observaciones
-        <span>Filtrar tareas mediante el texto de las observaciones.</span>
-    </a>
-
-    <a href="/tareas/completadas/2024/2026/">
-        06. Tareas completadas
-        <span>Buscar tareas completadas entre dos años.</span>
-    </a>
-
-    <a href="/proyectos/1/ultimo-comentarista/">
-        07. Último comentarista
-        <span>Consultar quién realizó el último comentario.</span>
-    </a>
-
-    <a href="/tareas/1/comentarios/hola/2026/">
-        08. Buscar comentarios
-        <span>Filtrar comentarios por palabra y año.</span>
-    </a>
-
-    <a href="/proyectos/1/etiquetas/">
-        09. Etiquetas de un proyecto
-        <span>Consultar las etiquetas utilizadas.</span>
-    </a>
-
-    <a href="/usuarios/sin-tareas/">
-        10. Usuarios sin tareas
-        <span>Ver usuarios que no tienen tareas asignadas.</span>
-    </a>
-
+    <a href="{% url 'lista_proyectos' %}">02. Todos los proyectos<span>Consultar todos los proyectos
+            registrados.</span></a>
+    <a href="{% url 'tareas_de_proyecto' 137  %}">03. Tareas de un proyecto<span>Ver las tareas ordenadas por
+            fecha.</span></a>
+    <a href="{% url 'usuarios_de_tarea' 1 %}">04. Usuarios asignados<span>Consultar los usuarios asignados a una
+            tarea.</span></a>
+    <a href="{% url 'tareas_por_observacion' 'six' %}">05. Buscar por observaciones<span>Filtrar tareas mediante el
+            texto de las observaciones.</span></a>
+    <a href="{% url 'tareas_completadas_entre_anios' 1976 2010 %}">06. Tareas completadas<span>Buscar tareas completadas
+            entre dos años.</span></a>
+    <a href="{% url 'ultimo_usuario_comentarista' 146 %}">07. Último comentarista<span>Consultar quién realizó el último
+            comentario.</span></a>
+    <a href="{% url 'comentarios_por_palabra_y_anio' 4 'American' 2020 %}">08. Buscar comentarios<span>Filtrar comentarios
+            por palabra y año.</span></a>
+    <a href="{% url 'etiquetas_de_proyecto' 124 %}">09. Etiquetas de un proyecto<span>Consultar las etiquetas
+            utilizadas.</span></a>
+    <a href="{% url 'usuarios_sin_tareas_asignadas' %}">10. Usuarios sin tareas<span>Ver usuarios que no tienen tareas
+            asignadas.</span></a>
 </div>
-
+{% else %}<p class="vacio">Los ejercicios no están disponibles en este momento.</p>{% endif %}
+{% endwith %}
 {% endblock %}

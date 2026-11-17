@@ -1,0 +1,1 @@
+<tr><td>{{ tarea.id }}</td><td>{{ tarea.titulo|title }}</td><td>{{ tarea.descripcion|default:"Sin descripción"|truncatechars:70 }}</td><td>{{ tarea.prioridad|upper }}</td><td><span class="estado">{{ tarea.get_estado_display|default:"Sin estado" }}</span></td><td>{{ tarea.fecha_creacion|date:"d/m/Y" }}</td><td>{{ tarea.hora_vencimiento|default:"-" }}</td></tr>

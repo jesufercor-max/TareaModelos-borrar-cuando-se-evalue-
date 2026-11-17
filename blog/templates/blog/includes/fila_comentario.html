@@ -1,0 +1,1 @@
+<div class="item-comentario"><h3>{{ comentario.autor.nombre|title }}</h3><p>{{ comentario.contenido|default:""|linebreaksbr }}</p><p><strong>Fecha:</strong> {{ comentario.fecha_comentario|date:"d/m/Y H:i" }}</p><p><strong>Tarea:</strong> {{ comentario.tarea.titulo|title }}</p></div>
